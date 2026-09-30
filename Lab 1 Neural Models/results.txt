@@ -1,0 +1,152 @@
+
+======================================================================
+Task 1: single affine layer + sigmoid (no hidden layer)
+======================================================================
+  final loss = 0.693147   (ln 2 = 0.693147)
+  probabilities = [0.5, 0.5, 0.5, 0.5]
+  learned w = [[-1.2555177342221668e-08, -1.0742283507170214e-07]], b = [7.530316281645355e-08]
+  correctly classified: 2/4
+
+  3 stacked affine layers (2-8-8-1, no activations):
+  final loss = 0.693649, probabilities = [0.4993191063404083, 0.5006089806556702, 0.49900034070014954, 0.5002902746200562]
+  equivalent single affine map W = [[-0.001275062677450478, 0.005159610416740179]], b = [-0.0027235280722379684]
+  max |collapsed map - network| = 1.49e-08  (the depth adds nothing)
+
+======================================================================
+Task 4A: 2-2-1 tanh network, BCEWithLogitsLoss, Adam lr=0.05, seed=0
+======================================================================
+  step     0  loss 0.715159
+  step  1000  loss 0.000638
+  step  2000  loss 0.000189
+  step  3000  loss 0.000083
+  step  4000  loss 0.000043
+  initial loss = 0.715159
+  final loss   = 0.000024
+  x=[0.0, 0.0]  P(y=1)=0.0000  predicted=0  target=0
+  x=[0.0, 1.0]  P(y=1)=1.0000  predicted=1  target=1
+  x=[1.0, 0.0]  P(y=1)=1.0000  predicted=1  target=1
+  x=[1.0, 1.0]  P(y=1)=0.0000  predicted=0  target=0
+  all four correct: True
+  learned hidden representation h(1) for each input:
+    x=[0.0, 0.0]  h=[-0.9887, -0.9780]
+    x=[0.0, 1.0]  h=[ 0.9893, -1.0000]
+    x=[1.0, 0.0]  h=[-1.0000,  0.9876]
+    x=[1.0, 1.0]  h=[-0.9904, -0.9896]
+
+======================================================================
+Task 4B: backpropagation check on first-layer weights W(1)
+======================================================================
+  loss at initialisation = 0.715159
+  W(1).grad (dL/dW(1)) from autograd:
+tensor([[ 0.0005,  0.0006],
+        [-0.0426, -0.0448]], dtype=torch.float64)
+  finite-difference estimate:
+tensor([[ 0.0005,  0.0006],
+        [-0.0426, -0.0448]], dtype=torch.float64)
+  max |autograd - finite difference| = 5.37e-11
+  average of the 4 per-example gradients:
+tensor([[ 0.0005,  0.0006],
+        [-0.0426, -0.0448]], dtype=torch.float64)
+  max |mean-loss grad - average of per-example grads| = 0.00e+00
+
+======================================================================
+Task 4C: symmetry experiment, all weights and biases set to zero
+======================================================================
+
+  hidden activation = tanh
+  step    0  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step    1  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step    2  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step    5  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step   10  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step  100  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step 3000  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  x=[0.0, 0.0]  P(y=1)=0.5000  predicted=1  target=0
+  x=[0.0, 1.0]  P(y=1)=0.5000  predicted=1  target=1
+  x=[1.0, 0.0]  P(y=1)=0.5000  predicted=1  target=1
+  x=[1.0, 1.0]  P(y=1)=0.5000  predicted=1  target=0
+  all four correct: False
+
+  hidden activation = sigmoid
+  step    0  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step    1  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step    2  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step    5  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step   10  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step  100  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  step 3000  W1 row0=[0.0, 0.0]  row1=[0.0, 0.0]  rows identical=True  grad row0=[0.0, 0.0] row1=[0.0, 0.0]  loss=0.6931
+  x=[0.0, 0.0]  P(y=1)=0.5000  predicted=1  target=0
+  x=[0.0, 1.0]  P(y=1)=0.5000  predicted=1  target=1
+  x=[1.0, 0.0]  P(y=1)=0.5000  predicted=1  target=1
+  x=[1.0, 1.0]  P(y=1)=0.5000  predicted=1  target=0
+  all four correct: False
+
+  identical non-zero init (every weight 0.5, biases 0), tanh
+  step    0  W1 row0=[0.5, 0.5]  row1=[0.5, 0.5]  rows identical=True  grad row0=[-0.00221, -0.00221] row1=[-0.00221, -0.00221]  loss=0.7038
+  step    1  W1 row0=[0.55, 0.55]  row1=[0.55, 0.55]  rows identical=True  grad row0=[-0.00746, -0.00746] row1=[-0.00746, -0.00746]  loss=0.6932
+  step   10  W1 row0=[0.9877, 0.9877]  row1=[0.9877, 0.9877]  rows identical=True  grad row0=[-0.01509, -0.01509] row1=[-0.01509, -0.01509]  loss=0.6540
+  step  100  W1 row0=[3.6726, 3.6726]  row1=[3.6726, 3.6726]  rows identical=True  grad row0=[-0.00142, -0.00142] row1=[-0.00142, -0.00142]  loss=0.4834
+  step 3000  W1 row0=[7.1221, 7.1221]  row1=[7.1221, 7.1221]  rows identical=True  grad row0=[-1e-05, -1e-05] row1=[-1e-05, -1e-05]  loss=0.4774
+  x=[0.0, 0.0]  P(y=1)=0.0000  predicted=0  target=0
+  x=[0.0, 1.0]  P(y=1)=0.6667  predicted=1  target=1
+  x=[1.0, 0.0]  P(y=1)=0.6667  predicted=1  target=1
+  x=[1.0, 1.0]  P(y=1)=0.6667  predicted=1  target=0
+  all four correct: False
+
+======================================================================
+Task 4D: activation experiment (seed=0, same init for every activation)
+======================================================================
+
+  sigmoid: final hidden pre-activations a(1) per input:
+    x=[0.0, 0.0]  a=[ 1.030, -2.274]
+    x=[0.0, 1.0]  a=[-12.432,  13.219]
+    x=[1.0, 0.0]  a=[-12.344,  13.259]
+    x=[1.0, 1.0]  a=[-25.806,  28.752]
+
+  tanh: final hidden pre-activations a(1) per input:
+    x=[0.0, 0.0]  a=[-2.583, -2.249]
+    x=[0.0, 1.0]  a=[ 2.611, -7.413]
+    x=[1.0, 0.0]  a=[-7.860,  2.538]
+    x=[1.0, 1.0]  a=[-2.666, -2.626]
+
+  relu: final hidden pre-activations a(1) per input:
+    x=[0.0, 0.0]  a=[-0.431, -0.401]
+    x=[0.0, 1.0]  a=[-0.211, -0.921]
+    x=[1.0, 0.0]  a=[-0.558, -0.983]
+    x=[1.0, 1.0]  a=[-0.337, -1.503]
+
+  | Hidden activation | Final loss | 4/4 correct? | ||grad W1|| step 0 | ||grad W1|| step 10 |
+  |---|---|---|---|---|
+  | sigmoid | 0.477397 | no | 0.0009 | 0.0012 |
+  | tanh | 0.000024 | yes | 0.0618 | 0.0094 |
+  | relu | 0.693148 | no | 0.0017 | 0.0000 |
+
+  Repeated-run check over seeds 0..19 (5000 Adam steps, lr=0.05):
+  | Hidden activation | runs with 4/4 correct | mean final loss |
+  |---|---|---|
+  | sigmoid | 8/20 | 0.2342 |
+  | tanh | 9/20 | 0.2037 |
+  | relu | 6/20 | 0.4097 |
+
+======================================================================
+Task 5: three-class extension (3 logits, CrossEntropyLoss)
+======================================================================
+  final weight matrix W(2) shape = (3, 2)  (predicted (3, 2))
+  logits per example = 3  (predicted 3)
+  initial loss = 1.059108  (ln 3 = 1.098612)
+  final loss   = 0.000011
+  x=[0.0, 0.0]  P=[1.0000, 0.0000, 0.0000]  predicted=0  target=0
+  x=[0.0, 1.0]  P=[0.0000, 1.0000, 0.0000]  predicted=1  target=1
+  x=[1.0, 0.0]  P=[0.0000, 1.0000, 0.0000]  predicted=1  target=1
+  x=[1.0, 1.0]  P=[0.0000, 0.0000, 1.0000]  predicted=2  target=2
+  all four correct: True
+
+  softmax vector for x=[0,1]: [6.634202236455167e-06, 0.9999914169311523, 1.942212520589237e-06]  sum = 1.0000000000
+  softmax(logits + 100) = [6.634202236455167e-06, 0.9999914169311523, 1.942216158568044e-06]
+  max |difference| = 3.64e-12
+  naive exp(logits + 1000) in float64 = [inf, inf, inf] (overflow, division gives nan)
+  after subtracting the max logit: [6.63410128254327e-06, 0.9999914169311523, 1.942216158568044e-06]
+
+  dL/dz from autograd = [6.634202236455167e-06, -8.58306884765625e-06, 1.9422122932155617e-06]
+  p - y               = [6.634202236455167e-06, -8.58306884765625e-06, 1.942212520589237e-06]
+  max |difference|    = 2.27e-13
