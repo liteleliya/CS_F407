@@ -1,0 +1,212 @@
+
+======================================================================
+Task 2: A* on the lab warehouse map
+======================================================================
+
+A* with Manhattan heuristic
+  solution found, path length = 40, states expanded = 63
+  valid when replayed: True
+  actions: Right Right Right Right Down Down Down Down Right Right Right Right Right Right Right Right Up Up Left Left Left Left Left Left Up Up Right Right Right Right Right Right Right Right Down Down Down Down Down Down
+  #################
+  #S****#*********#
+  #.###*#*#######*#
+  #...#*#*******#*#
+  ###.#*#######*#*#
+  #...#*********#*#
+  #.###########.#*#
+  #.............#G#
+  #################
+
+======================================================================
+Task 3: testing A* (Manhattan heuristic)
+======================================================================
+
+#################
+#S....#.........#
+#.###.#.#######.#
+#...#.#.......#.#
+###.#.#######.#.#
+#...#.........#.#
+#.###########.#.#
+#.............#G#
+#################
+
+Test 1: original warehouse
+  solution found, path length = 40, states expanded = 63
+  valid when replayed: True
+  actions: Right Right Right Right Down Down Down Down Right Right Right Right Right Right Right Right Up Up Left Left Left Left Left Left Up Up Right Right Right Right Right Right Right Right Down Down Down Down Down Down
+  #################
+  #S****#*********#
+  #.###*#*#######*#
+  #...#*#*******#*#
+  ###.#*#######*#*#
+  #...#*********#*#
+  #.###########.#*#
+  #.............#G#
+  #################
+  [PASS]
+
+#####
+#SG##
+#####
+
+Test 2: trivial case
+  solution found, path length = 1, states expanded = 1
+  valid when replayed: True
+  actions: Right
+  #####
+  #SG##
+  #####
+  [PASS]
+
+#######
+#S....#
+###.###
+#...#G#
+#######
+
+Test 3: no solution
+  no solution; states expanded = 9
+  [PASS]
+
+###########
+#S.......G#
+#.#######.#
+#.........#
+###########
+
+Test 4: alternative paths
+  solution found, path length = 8, states expanded = 8
+  valid when replayed: True
+  actions: Right Right Right Right Right Right Right Right
+  ###########
+  #S*******G#
+  #.#######.#
+  #.........#
+  ###########
+  [PASS]
+
+#########
+#.......#
+#.#####.#
+#S#...#G#
+#.#.#.#.#
+#.......#
+#########
+
+Test 4b: two equally short paths
+  solution found, path length = 10, states expanded = 11
+  valid when replayed: True
+  actions: Up Up Right Right Right Right Right Right Down Down
+  #########
+  #*******#
+  #*#####*#
+  #S#...#G#
+  #.#.#.#.#
+  #.......#
+  #########
+  [PASS]
+[PASS] S boxed in, G elsewhere: no solution
+[PASS] map without full border: stays on the grid
+[PASS] A* on lab map equals BFS path length
+
+8/8 tests passed
+
+======================================================================
+Task 5: BFS vs A* (Manhattan)
+======================================================================
+
+lab map (64 free cells)
+| Measure | BFS | A* (Manhattan) |
+|---|---|---|
+| Solution found | True | True |
+| Path length | 40 | 40 |
+| States expanded | 63 | 63 |
+
+two-route map (40 free cells)
+| Measure | BFS | A* (Manhattan) |
+|---|---|---|
+| Solution found | True | True |
+| Path length | 16 | 16 |
+| States expanded | 30 | 26 |
+
+open 20 x 20 room (400 free cells)
+| Measure | BFS | A* (Manhattan) |
+|---|---|---|
+| Solution found | True | True |
+| Path length | 38 | 38 |
+| States expanded | 398 | 38 |
+
+======================================================================
+Task 6: heuristic investigation
+======================================================================
+
+lab map:
+#################
+#S....#.........#
+#.###.#.#######.#
+#...#.#.......#.#
+###.#.#######.#.#
+#...#.........#.#
+#.###########.#.#
+#.............#G#
+#################
+optimal path length (from BFS) = 40
+| Heuristic | Solution found | Path length | States expanded | Admissible on this map? | worst h(n) - h*(n) |
+|---|---|---|---|---|---|
+| Manhattan | True | 40 | 63 | yes | +0.00 |
+| h = 0 | True | 40 | 63 | yes | +0.00 |
+| Euclidean | True | 40 | 63 | yes | +0.00 |
+| 2 x Manhattan | True | 40 | 67 | no | +14.00 |
+| (BFS, for reference) | True | 40 | 63 | n/a | n/a |
+
+two-route map:
+###########
+#.........#
+#.#######.#
+#.#.....#.#
+#.#.###.#.#
+#S#...#.#G#
+#.###.#.#.#
+#.....#...#
+###########
+optimal path length (from BFS) = 16
+| Heuristic | Solution found | Path length | States expanded | Admissible on this map? | worst h(n) - h*(n) |
+|---|---|---|---|---|---|
+| Manhattan | True | 16 | 26 | yes | +0.00 |
+| h = 0 | True | 16 | 31 | yes | +0.00 |
+| Euclidean | True | 16 | 25 | yes | +0.00 |
+| 2 x Manhattan | True | 24 | 27 | no | +12.00 |
+| (BFS, for reference) | True | 16 | 30 | n/a | n/a |
+
+open 20 x 20 room:
+optimal path length (from BFS) = 38
+| Heuristic | Solution found | Path length | States expanded | Admissible on this map? | worst h(n) - h*(n) |
+|---|---|---|---|---|---|
+| Manhattan | True | 38 | 38 | yes | +0.00 |
+| h = 0 | True | 38 | 399 | yes | +0.00 |
+| Euclidean | True | 38 | 362 | yes | +0.00 |
+| 2 x Manhattan | True | 38 | 38 | no | +38.00 |
+| (BFS, for reference) | True | 38 | 398 | n/a | n/a |
+
+two-route map, path returned with Manhattan (length 16):
+###########
+#*********#
+#*#######*#
+#*#.....#*#
+#*#.###.#*#
+#S#...#.#G#
+#.###.#.#.#
+#.....#...#
+###########
+
+two-route map, path returned with 2 x Manhattan (length 24):
+###########
+#.........#
+#.#######.#
+#.#*****#.#
+#.#*###*#.#
+#S#***#*#G#
+#*###*#*#*#
+#*****#***#
+###########
